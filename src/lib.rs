@@ -1,3 +1,5 @@
+mod anim;
+
 use wasm_bindgen::prelude::*;
 use console_log;
 use log;
@@ -16,4 +18,6 @@ pub fn start() {
     info!("Logging works!");
 
     std::panic::set_hook(Box::new(console_error_panic_hook::hook));
+
+    anim::animate();
 }
