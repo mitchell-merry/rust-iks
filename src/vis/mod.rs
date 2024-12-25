@@ -1,5 +1,6 @@
 mod cubemodel;
 
+use crate::vis::cubemodel::CubeObject;
 use three_d::*;
 
 pub fn animate() {
@@ -29,11 +30,7 @@ pub fn animate() {
     );
     let mut control = OrbitControl::new(camera.target(), 1.0, 5.0);
 
-    let cube_mesh = Mesh::new(&context, &CpuMesh::cube());
-
-    // Construct a model, with some material, thereby transferring the mesh data to the GPU
-    let mut cube = Gm::new(cube_mesh, ColorMaterial::default());
-    cube.set_transformation(Mat4::from_scale(0.1));
+    let cube = CubeObject::new(&context, 3);
 
     // Start the main render loop
     window.render_loop(
