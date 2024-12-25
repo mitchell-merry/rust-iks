@@ -3,14 +3,12 @@ mod cubemodel;
 use three_d::*;
 
 pub fn animate() {
-    use log::info;
-
     // Create a window (a canvas on web)
     let window = Window::new(WindowSettings {
         title: "a cool rubik's cube. sorry you can't see it".to_string(),
         ..Default::default()
     })
-        .unwrap();
+    .unwrap();
 
     // Get the graphics context from the window
     let context = window.gl();
@@ -34,10 +32,7 @@ pub fn animate() {
     let cube_mesh = Mesh::new(&context, &CpuMesh::cube());
 
     // Construct a model, with some material, thereby transferring the mesh data to the GPU
-    let mut cube = Gm::new(
-        cube_mesh,
-        ColorMaterial::default(),
-    );
+    let mut cube = Gm::new(cube_mesh, ColorMaterial::default());
     cube.set_transformation(Mat4::from_scale(0.1));
 
     // Start the main render loop

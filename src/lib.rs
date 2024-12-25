@@ -1,4 +1,5 @@
 mod vis;
+mod cube;
 
 use wasm_bindgen::prelude::*;
 use console_log;
