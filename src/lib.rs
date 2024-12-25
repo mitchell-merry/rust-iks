@@ -1,4 +1,4 @@
-mod anim;
+mod vis;
 
 use wasm_bindgen::prelude::*;
 use console_log;
@@ -19,5 +19,5 @@ pub fn start() {
 
     std::panic::set_hook(Box::new(console_error_panic_hook::hook));
 
-    anim::animate();
+    vis::animate();
 }
