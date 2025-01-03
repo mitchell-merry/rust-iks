@@ -1,10 +1,11 @@
-mod vis;
 mod cube;
+mod utils;
+mod vis;
 
-use wasm_bindgen::prelude::*;
+use console_error_panic_hook;
 use console_log;
 use log;
-use console_error_panic_hook;
+use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 extern "C" {

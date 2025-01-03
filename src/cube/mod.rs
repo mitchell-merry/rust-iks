@@ -1,3 +1,5 @@
+use crate::utils::Coordinate3;
+
 mod mod_test;
 
 #[derive(Debug, PartialEq)]
@@ -92,9 +94,7 @@ impl CubeNxN {
         let mut cubies = Vec::with_capacity(cubie_count);
 
         for i in 0..cubie_count {
-            let x = i % size;
-            let y = (i / size) % size;
-            let z = (i / (size * size)) % size;
+            let Coordinate3([x, y, z]) = Coordinate3::from_index(i, size);
 
             let up = Colour::otherwise_none(y == 0, Colour::WHITE);
             let left = Colour::otherwise_none(x == size - 1, Colour::ORANGE);

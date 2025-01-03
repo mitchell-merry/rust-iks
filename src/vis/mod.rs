@@ -1,4 +1,5 @@
 mod cubemodel;
+mod cubemodel_test;
 
 use crate::vis::cubemodel::CubeObject;
 use three_d::*;
@@ -28,9 +29,10 @@ pub fn animate() {
         0.1,
         10.0,
     );
-    let mut control = OrbitControl::new(camera.target(), 1.0, 5.0);
+    let mut control = OrbitControl::new(camera.target(), 1.0, 10.0);
 
-    let cube = CubeObject::new(&context, 3);
+    let mut cube = CubeObject::new(&context, 3);
+    let mut axes = Axes::new(&context, 0.1, 2.0);
 
     // Start the main render loop
     window.render_loop(
@@ -41,7 +43,7 @@ pub fn animate() {
                 control.handle_events(&mut camera, &mut frame_input.events);
 
                 // Update the animation of the triangle
-                // cube.animate(frame_input.accumulated_time as f32);
+                cube.animate(frame_input.accumulated_time as f32);
                 // info!("accumulated_time: {0}", frame_input.accumulated_time);
 
                 // Get the screen render target to be able to render something on the screen
@@ -50,7 +52,7 @@ pub fn animate() {
                     .clear(ClearState::color_and_depth(0.0, 0.0, 0.0, 1.0, 1.0))
                     // Render the triangle with the color material which uses the per vertex colors defined at construction
                     .render(
-                        &camera, &cube, &[]
+                        &camera, cube.into_iter().chain(&axes), &[]
                     );
 
                 // Returns default frame output to end the frame
