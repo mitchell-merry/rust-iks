@@ -11,3 +11,7 @@ You have [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/) installed.
 ```sh
 wasm-pack build . --target web --out-name web --out-dir ./pkg
 ```
+
+## running
+
+serve index.html from any web server and open it (after compiling)
