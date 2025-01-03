@@ -27,12 +27,12 @@ pub fn animate() {
         // FOV
         degrees(45.0),
         0.1,
-        10.0,
+        100.0,
     );
-    let mut control = OrbitControl::new(camera.target(), 1.0, 10.0);
+    let mut control = OrbitControl::new(camera.target(), 1.0, 20.0);
 
-    let mut cube = CubeObject::new(&context, 3);
-    let mut axes = Axes::new(&context, 0.1, 2.0);
+    let mut cube = CubeObject::new(&context, 7, 2.0);
+    let mut axes = Axes::new(&context, 0.1, 5.0);
 
     // Start the main render loop
     window.render_loop(

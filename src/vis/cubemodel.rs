@@ -1,10 +1,11 @@
 use crate::cube::CubeNxN;
 use crate::utils::Coordinate3;
+use log::info;
 use three_d::{
     ColorMaterial, Context, CpuMesh, Geometry, Gm, Mat4, Mesh, Object, RenderStates, Srgba, Vec3,
 };
 
-const CUBIE_WORLD_SIZE: f32 = 1.0;
+const CUBIE_WORLD_SIZE: f32 = 0.1;
 
 /// An NxN twisty puzzle model which can be drawn on screen.
 pub struct CubeObject {
@@ -16,15 +17,16 @@ pub struct CubeObject {
 }
 
 impl CubeObject {
-    pub fn new(context: &Context, size: usize) -> Self {
-        let base = CubeNxN::default(size);
-        let cubie_models = (0..size.pow(3))
+    pub fn new(context: &Context, cube_size: usize, world_size: f32) -> Self {
+        let base = CubeNxN::default(cube_size);
+
+        let cubie_models = (0..cube_size.pow(3))
             .map(|i| {
-                let Coordinate3([x, y, z]) = Coordinate3::from_index(i, size);
+                let coord = Coordinate3::from_index(i, cube_size);
 
                 let cube_mesh = Mesh::new(&context, &CpuMesh::cube());
 
-                let colour = vec![Srgba::WHITE, Srgba::RED, Srgba::GREEN, Srgba::BLUE][i % 4];
+                let colour = vec![Srgba::WHITE, Srgba::RED, Srgba::GREEN][i % 3];
 
                 // TODO the colours
                 let mut model = Gm::new(
@@ -37,13 +39,16 @@ impl CubeObject {
                     },
                 );
 
-                let offset = -(size as f32 / 2.0);
-                let translation = Mat4::from_translation(Vec3::new(
-                    (x as f32 + offset) * CUBIE_WORLD_SIZE,
-                    (y as f32 + offset) * CUBIE_WORLD_SIZE,
-                    (z as f32 + offset) * CUBIE_WORLD_SIZE,
-                ));
-                model.set_transformation(Mat4::from_scale(CUBIE_WORLD_SIZE) * translation);
+                // TODO LOL this does not work with even numbers it's probably something easy and
+                //   dumb I know but like not my main focus right now OK i'll figure it out in a sec
+                let offset = -(cube_size as i32 / 2) as f32;
+                info!("offset: {offset}");
+                // TODO this is all a bad way of doing it and doesn't make sense refactor this later
+                //  to actually use world size and not do the translation and scale calculations in
+                //  different places
+                let world_coord = coord.to_world_coordinates(offset, world_size);
+                let translation = Mat4::from_translation(world_coord);
+                model.set_transformation(translation * Mat4::from_scale(0.5));
 
                 // model.set_animation(move |time| {
                 //     Mat4::from_angle_x(Rad(time * 0.001)) * Mat4::from_angle_y(Rad(time * 0.002))
@@ -52,7 +57,6 @@ impl CubeObject {
                 model
             })
             .collect();
-
         CubeObject {
             current_state: base,
             cubie_models,
